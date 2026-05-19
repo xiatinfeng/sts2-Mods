@@ -1,0 +1,17 @@
+# Godot
+.godot/
+.mono/
+
+# Build outputs
+bin/
+obj/
+
+# IDE
+*.sln
+*.DotSettings.user
+.vs/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
