@@ -1,6 +1,6 @@
 # sts2-Mods
 
-adimn's Slay the Spire 2 MOD collection.
+xiatingfeng's Slay the Spire 2 MOD collection.
 
 ## MODs
 
