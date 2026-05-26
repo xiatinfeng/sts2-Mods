@@ -205,7 +205,7 @@ public partial class MonsterTooltip : PanelContainer
             }
             else
             {
-                ModLogger.LogErr($""Failed to load image '{absolutePath}': {error}");
+                ModLogger.LogErr($"Failed to load image '{absolutePath}': {error}");
                 imgRect.Texture = null;
                 TextureCache[absolutePath] = null;
                 return false;
@@ -213,7 +213,7 @@ public partial class MonsterTooltip : PanelContainer
         }
         catch (Exception ex)
         {
-            ModLogger.LogErr($""Image loading exception for '{absolutePath}': {ex.Message}");
+            ModLogger.LogErr($"Image loading exception for '{absolutePath}': {ex.Message}");
             imgRect.Texture = null;
             TextureCache[absolutePath] = null;
             return false;
