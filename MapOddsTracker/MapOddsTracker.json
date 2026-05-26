@@ -1,0 +1,11 @@
+{
+  "id": "MapOddsTracker",
+  "name": "Map Odds Tracker",
+  "author": "K2",
+  "description": "Predicts monster order for all Acts with monster image tooltips.\n预测全 ACT 怪物顺序，鼠标悬停显示怪物图片。",
+  "version": "0.2.0",
+  "has_pck": false,
+  "has_dll": true,
+  "dependencies": [],
+  "affects_gameplay": true
+}
