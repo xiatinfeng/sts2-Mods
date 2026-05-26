@@ -40,7 +40,7 @@ public static class MonsterImageMapper
                 BossIds.Add(id.Trim().ToLowerInvariant());
         }
         _bossIdsRegistered = true;
-        ModLogger.Log($Registered {BossIds.Count} boss IDs from runtime data: [{string.Join(", ", BossIds)}]");
+        ModLogger.Log($"Registered {BossIds.Count} boss IDs from runtime data: [{string.Join(", ", BossIds)}]");
     }
 
     // Non-standard filename overrides: key = monster ID, value = filename stem (no extension).
@@ -59,7 +59,7 @@ public static class MonsterImageMapper
         var assemblyDir = Path.GetDirectoryName(assemblyPath);
         AssetsBaseDir = assemblyDir != null ? Path.Combine(assemblyDir, "assets") : string.Empty;
 
-        ModLogger.Log($MonsterImageMapper initialized. AssetsBaseDir={AssetsBaseDir}");
+        ModLogger.Log($"MonsterImageMapper initialized. AssetsBaseDir={AssetsBaseDir}");
         ScanManualFolder();
     }
 
@@ -72,7 +72,7 @@ public static class MonsterImageMapper
         }
 
         var manualPath = Path.Combine(AssetsBaseDir, ManualDir);
-        ModLogger.Log($Scanning manual folder: {manualPath}");
+        ModLogger.Log($"Scanning manual folder: {manualPath}");
 
         if (!Directory.Exists(manualPath))
         {
@@ -91,9 +91,9 @@ public static class MonsterImageMapper
                 var stem = Path.GetFileNameWithoutExtension(file);
                 ManualFileCache[stem] = file;
                 count++;
-                ModLogger.Log($Cached manual image: {stem} -> {file}");
+                ModLogger.Log($"Cached manual image: {stem} -> {file}");
             }
-            ModLogger.Log($Manual folder scan complete. {count} images cached.");
+            ModLogger.Log($"Manual folder scan complete. {count} images cached.");
         }
         catch (Exception ex)
         {
@@ -142,7 +142,7 @@ public static class MonsterImageMapper
         // Fallback: manual folder (exact stem match, case-insensitive)
         if (ManualFileCache.TryGetValue(id, out var manualPath))
         {
-            ModLogger.Log($Found manual image for '{id}': {manualPath}");
+            ModLogger.Log($"Found manual image for '{id}': {manualPath}");
             return manualPath;
         }
 
@@ -151,12 +151,12 @@ public static class MonsterImageMapper
         {
             if (kvp.Key.Contains(id, StringComparison.OrdinalIgnoreCase) || id.Contains(kvp.Key, StringComparison.OrdinalIgnoreCase))
             {
-                ModLogger.Log($Found partial manual match for '{id}': {kvp.Value}");
+                ModLogger.Log($"Found partial manual match for '{id}': {kvp.Value}");
                 return kvp.Value;
             }
         }
 
-        ModLogger.Log($No image found for '{id}' (isBoss={isBoss})");
+        ModLogger.Log($"No image found for '{id}' (isBoss={isBoss})");
         return null;
     }
 

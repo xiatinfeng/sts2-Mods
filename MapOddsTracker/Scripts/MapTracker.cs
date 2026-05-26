@@ -117,7 +117,7 @@ public static class MapTracker
         }
         catch (Exception ex)
         {
-            ModLogger.LogErr($"Failed to get encounter name: {ex.Message}");
+            ModLogger.LogErr($""Failed to get encounter name: {ex.Message}");
         }
         return (id, id);
     }
@@ -150,7 +150,7 @@ public static class MapTracker
         }
         catch (Exception ex)
         {
-            ModLogger.LogErr($"Failed to get AllPossibleMonsters for {encounter.Id.Entry}: {ex.Message}");
+            ModLogger.LogErr($""Failed to get AllPossibleMonsters for {encounter.Id.Entry}: {ex.Message}");
         }
 
         // Fallback: if no monsters extracted, use encounter ID itself
@@ -169,7 +169,7 @@ public static class MapTracker
         {
             Reset();
             _capturedRunState = state;
-            ModLogger.Log($RunState captured. Seed: {state.Rng.StringSeed}");
+            ModLogger.Log($"RunState captured. Seed: {state.Rng.StringSeed}");
         }
 
         // Always update current act index — it changes as player progresses through acts
@@ -206,7 +206,7 @@ public static class MapTracker
                 }
                 catch (Exception ex)
                 {
-                    ModLogger.LogErr($"Failed to get act.Map via reflection: {ex.Message}");
+                    ModLogger.LogErr($""Failed to get act.Map via reflection: {ex.Message}");
                 }
 
                 if (map == null)
@@ -220,7 +220,7 @@ public static class MapTracker
                         shouldReplaceTreasureWithElites: false,
                         hasSecondBoss: act.HasSecondBoss
                     );
-                    ModLogger.Log($Act {actIdx + 1} map not available, using fallback RNG generation.");
+                    ModLogger.Log($"Act {actIdx + 1} map not available, using fallback RNG generation.");
                 }
 
                 // 读取 encounters
@@ -259,7 +259,7 @@ public static class MapTracker
                 }
                 catch (Exception ex)
                 {
-                    ModLogger.LogErr($"Failed to read rooms for act {actIdx + 1}: {ex.Message}");
+                    ModLogger.LogErr($""Failed to read rooms for act {actIdx + 1}: {ex.Message}");
                 }
 
                 // 获取已访问坐标
@@ -351,11 +351,11 @@ public static class MapTracker
                     };
                 }
 
-                ModLogger.Log($Act {actIdx + 1}: {nodes.Count} nodes, {normalQueue.Count} normal, {eliteQueue.Count} elite, boss={bossEncounter?.Id.Entry ?? "none"}, consumed {normalEncountersVisited}/{eliteEncountersVisited}");
+                ModLogger.Log($"Act {actIdx + 1}: {nodes.Count} nodes, {normalQueue.Count} normal, {eliteQueue.Count} elite, boss={bossEncounter?.Id.Entry ?? "none"}, consumed {normalEncountersVisited}/{eliteEncountersVisited}");
             }
             catch (Exception ex)
             {
-                ModLogger.LogErr($"Failed to generate map for act {actIdx + 1}: {ex.Message}");
+                ModLogger.LogErr($""Failed to generate map for act {actIdx + 1}: {ex.Message}");
             }
         }
 
@@ -375,7 +375,7 @@ public static class MapTracker
         }
 
         _initialized = true;
-        ModLogger.Log($Generated maps for {_actNodeData.Count} acts.");
+        ModLogger.Log($"Generated maps for {_actNodeData.Count} acts.");
     }
 
     /// <summary>
@@ -449,11 +449,11 @@ public static class MapTracker
                     }
                 }
 
-                ModLogger.Log($Refreshed consumption for Act {actIdx + 1}: {normalEncountersVisited} normal, {eliteEncountersVisited} elite consumed.");
+                ModLogger.Log($"Refreshed consumption for Act {actIdx + 1}: {normalEncountersVisited} normal, {eliteEncountersVisited} elite consumed.");
             }
             catch (Exception ex)
             {
-                ModLogger.LogErr($"Failed to refresh consumption for act {actIdx + 1}: {ex.Message}");
+                ModLogger.LogErr($""Failed to refresh consumption for act {actIdx + 1}: {ex.Message}");
             }
         }
     }
@@ -494,7 +494,7 @@ public static class MapTracker
         }
         catch (Exception ex)
         {
-            ModLogger.LogErr($"Failed to create overlay: {ex.Message}");
+            ModLogger.LogErr($""Failed to create overlay: {ex.Message}");
         }
     }
 
@@ -538,13 +538,13 @@ public static class MapTracker
                     }
                     catch (Exception ex)
                     {
-                        ModLogger.LogErr($"Deferred init failed: {ex.Message}");
+                        ModLogger.LogErr($""Deferred init failed: {ex.Message}");
                     }
                 };
             }
             catch (Exception ex)
             {
-                ModLogger.LogErr($"NMapScreen.Open postfix failed: {ex.Message}");
+                ModLogger.LogErr($""NMapScreen.Open postfix failed: {ex.Message}");
             }
         }
     }
