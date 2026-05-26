@@ -117,7 +117,7 @@ public static class MapTracker
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"[MapOddsTracker] Failed to get encounter name: {ex.Message}");
+            ModLogger.LogErr($"Failed to get encounter name: {ex.Message}");
         }
         return (id, id);
     }
@@ -150,7 +150,7 @@ public static class MapTracker
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"[MapOddsTracker] Failed to get AllPossibleMonsters for {encounter.Id.Entry}: {ex.Message}");
+            ModLogger.LogErr($"Failed to get AllPossibleMonsters for {encounter.Id.Entry}: {ex.Message}");
         }
 
         // Fallback: if no monsters extracted, use encounter ID itself
@@ -169,7 +169,7 @@ public static class MapTracker
         {
             Reset();
             _capturedRunState = state;
-            GD.Print($"[MapOddsTracker] RunState captured. Seed: {state.Rng.StringSeed}");
+            ModLogger.Log($"RunState captured. Seed: {state.Rng.StringSeed}");
         }
 
         // Always update current act index — it changes as player progresses through acts
@@ -201,18 +201,18 @@ public static class MapTracker
                 ActMap? map = null;
                 try
                 {
-                    var mapProp = act.GetType().GetProperty("Map", BindingFlags.Public | BindingFlags.Instance);
+                    var mapProp = act.GetType().GetProperty(ModConstants.ActMapProperty, BindingFlags.Public | BindingFlags.Instance);
                     map = mapProp?.GetValue(act) as ActMap;
                 }
                 catch (Exception ex)
                 {
-                    GD.PrintErr($"[MapOddsTracker] Failed to get act.Map via reflection: {ex.Message}");
+                    ModLogger.LogErr($"Failed to get act.Map via reflection: {ex.Message}");
                 }
 
                 if (map == null)
                 {
                     bool isMultiplayer = state.Players.Count > 1;
-                    var mapRng = new Rng(state.Rng.Seed, $"act_{actIdx + 1}_map");
+                    var mapRng = new Rng(state.Rng.Seed, string.Format(ModConstants.ActMapSeedFormat, actIdx + 1));
                     map = new StandardActMap(
                         mapRng,
                         act,
@@ -220,7 +220,7 @@ public static class MapTracker
                         shouldReplaceTreasureWithElites: false,
                         hasSecondBoss: act.HasSecondBoss
                     );
-                    GD.Print($"[MapOddsTracker] Act {actIdx + 1} map not available, using fallback RNG generation.");
+                    ModLogger.Log($"Act {actIdx + 1} map not available, using fallback RNG generation.");
                 }
 
                 // 读取 encounters
@@ -232,17 +232,17 @@ public static class MapTracker
 
                 try
                 {
-                    var roomsField = typeof(ActModel).GetField("_rooms", BindingFlags.NonPublic | BindingFlags.Instance);
+                    var roomsField = typeof(ActModel).GetField(ModConstants.RoomsField, BindingFlags.NonPublic | BindingFlags.Instance);
                     if (roomsField != null)
                     {
                         var roomSet = roomsField.GetValue(act);
                         if (roomSet != null)
                         {
-                            var normalField = roomSet.GetType().GetField("normalEncounters", BindingFlags.Public | BindingFlags.Instance);
-                            var eliteField = roomSet.GetType().GetField("eliteEncounters", BindingFlags.Public | BindingFlags.Instance);
-                            var bossProp = roomSet.GetType().GetProperty("Boss", BindingFlags.Public | BindingFlags.Instance);
-                            var normalVisitedField = roomSet.GetType().GetField("normalEncountersVisited", BindingFlags.Public | BindingFlags.Instance);
-                            var eliteVisitedField = roomSet.GetType().GetField("eliteEncountersVisited", BindingFlags.Public | BindingFlags.Instance);
+                            var normalField = roomSet.GetType().GetField(ModConstants.NormalEncountersField, BindingFlags.Public | BindingFlags.Instance);
+                            var eliteField = roomSet.GetType().GetField(ModConstants.EliteEncountersField, BindingFlags.Public | BindingFlags.Instance);
+                            var bossProp = roomSet.GetType().GetProperty(ModConstants.BossProperty, BindingFlags.Public | BindingFlags.Instance);
+                            var normalVisitedField = roomSet.GetType().GetField(ModConstants.NormalVisitedField, BindingFlags.Public | BindingFlags.Instance);
+                            var eliteVisitedField = roomSet.GetType().GetField(ModConstants.EliteVisitedField, BindingFlags.Public | BindingFlags.Instance);
 
                             if (normalField != null)
                                 normalEncounters = (List<EncounterModel>)normalField.GetValue(roomSet)! ?? new();
@@ -259,14 +259,14 @@ public static class MapTracker
                 }
                 catch (Exception ex)
                 {
-                    GD.PrintErr($"[MapOddsTracker] Failed to read rooms for act {actIdx + 1}: {ex.Message}");
+                    ModLogger.LogErr($"Failed to read rooms for act {actIdx + 1}: {ex.Message}");
                 }
 
                 // 获取已访问坐标
                 HashSet<MapCoord> visitedCoords = new();
                 try
                 {
-                    var visitedProp = state.GetType().GetProperty("VisitedMapCoords", BindingFlags.Public | BindingFlags.Instance);
+                    var visitedProp = state.GetType().GetProperty(ModConstants.VisitedCoordsProperty, BindingFlags.Public | BindingFlags.Instance);
                     var visitedList = visitedProp?.GetValue(state) as List<MapCoord>;
                     if (visitedList != null)
                     {
@@ -351,11 +351,11 @@ public static class MapTracker
                     };
                 }
 
-                GD.Print($"[MapOddsTracker] Act {actIdx + 1}: {nodes.Count} nodes, {normalQueue.Count} normal, {eliteQueue.Count} elite, boss={bossEncounter?.Id.Entry ?? "none"}, consumed {normalEncountersVisited}/{eliteEncountersVisited}");
+                ModLogger.Log($"Act {actIdx + 1}: {nodes.Count} nodes, {normalQueue.Count} normal, {eliteQueue.Count} elite, boss={bossEncounter?.Id.Entry ?? "none"}, consumed {normalEncountersVisited}/{eliteEncountersVisited}");
             }
             catch (Exception ex)
             {
-                GD.PrintErr($"[MapOddsTracker] Failed to generate map for act {actIdx + 1}: {ex.Message}");
+                ModLogger.LogErr($"Failed to generate map for act {actIdx + 1}: {ex.Message}");
             }
         }
 
@@ -375,7 +375,7 @@ public static class MapTracker
         }
 
         _initialized = true;
-        GD.Print($"[MapOddsTracker] Generated maps for {_actNodeData.Count} acts.");
+        ModLogger.Log($"Generated maps for {_actNodeData.Count} acts.");
     }
 
     /// <summary>
@@ -396,14 +396,14 @@ public static class MapTracker
                 int eliteEncountersVisited = 0;
 
                 // Read visited counters using the same reflection logic as EnsureGenerated
-                var roomsField = typeof(ActModel).GetField("_rooms", BindingFlags.NonPublic | BindingFlags.Instance);
+                var roomsField = typeof(ActModel).GetField(ModConstants.RoomsField, BindingFlags.NonPublic | BindingFlags.Instance);
                 if (roomsField != null)
                 {
                     var roomSet = roomsField.GetValue(act);
                     if (roomSet != null)
                     {
-                        var normalVisitedField = roomSet.GetType().GetField("normalEncountersVisited", BindingFlags.Public | BindingFlags.Instance);
-                        var eliteVisitedField = roomSet.GetType().GetField("eliteEncountersVisited", BindingFlags.Public | BindingFlags.Instance);
+                        var normalVisitedField = roomSet.GetType().GetField(ModConstants.NormalVisitedField, BindingFlags.Public | BindingFlags.Instance);
+                        var eliteVisitedField = roomSet.GetType().GetField(ModConstants.EliteVisitedField, BindingFlags.Public | BindingFlags.Instance);
 
                         if (normalVisitedField != null)
                             normalEncountersVisited = (int)(normalVisitedField.GetValue(roomSet) ?? 0);
@@ -430,7 +430,7 @@ public static class MapTracker
                 HashSet<MapCoord> visitedCoords = new();
                 try
                 {
-                    var visitedProp = state.GetType().GetProperty("VisitedMapCoords", BindingFlags.Public | BindingFlags.Instance);
+                    var visitedProp = state.GetType().GetProperty(ModConstants.VisitedCoordsProperty, BindingFlags.Public | BindingFlags.Instance);
                     var visitedList = visitedProp?.GetValue(state) as List<MapCoord>;
                     if (visitedList != null)
                     {
@@ -449,11 +449,11 @@ public static class MapTracker
                     }
                 }
 
-                GD.Print($"[MapOddsTracker] Refreshed consumption for Act {actIdx + 1}: {normalEncountersVisited} normal, {eliteEncountersVisited} elite consumed.");
+                ModLogger.Log($"Refreshed consumption for Act {actIdx + 1}: {normalEncountersVisited} normal, {eliteEncountersVisited} elite consumed.");
             }
             catch (Exception ex)
             {
-                GD.PrintErr($"[MapOddsTracker] Failed to refresh consumption for act {actIdx + 1}: {ex.Message}");
+                ModLogger.LogErr($"Failed to refresh consumption for act {actIdx + 1}: {ex.Message}");
             }
         }
     }
@@ -477,7 +477,7 @@ public static class MapTracker
             var root = sceneTree?.Root;
             if (root == null) return;
 
-            var existing = root.GetNodeOrNull("MapOddsOverlay");
+            var existing = root.GetNodeOrNull(ModConstants.OverlayNodeName);
             if (existing != null)
             {
                 if (existing is MapOverlay overlay && GodotObject.IsInstanceValid(overlay))
@@ -488,13 +488,13 @@ public static class MapTracker
             }
 
             _overlay = new MapOverlay();
-            _overlay.Name = "MapOddsOverlay";
+            _overlay.Name = ModConstants.OverlayNodeName;
             root.AddChild(_overlay);
-            GD.Print("[MapOddsTracker] Overlay created!");
+            ModLogger.Log("Overlay created!");
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"[MapOddsTracker] Failed to create overlay: {ex.Message}");
+            ModLogger.LogErr($"Failed to create overlay: {ex.Message}");
         }
     }
 
@@ -516,19 +516,19 @@ public static class MapTracker
                     try
                     {
                         var runMgrType = typeof(RunManager);
-                        var instanceProp = runMgrType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+                        var instanceProp = runMgrType.GetProperty(ModConstants.RunManagerInstProperty, BindingFlags.Public | BindingFlags.Static);
                         var instance = instanceProp?.GetValue(null);
                         if (instance == null)
                         {
-                            GD.Print("[MapOddsTracker] RunManager.Instance is null.");
+                            ModLogger.Log("RunManager.Instance is null.");
                             return;
                         }
 
-                        var stateProp = runMgrType.GetProperty("State", BindingFlags.NonPublic | BindingFlags.Instance);
+                        var stateProp = runMgrType.GetProperty(ModConstants.RunManagerStateProperty, BindingFlags.NonPublic | BindingFlags.Instance);
                         var runState = stateProp?.GetValue(instance) as RunState;
                         if (runState == null)
                         {
-                            GD.Print("[MapOddsTracker] RunState not available yet, skipping.");
+                            ModLogger.Log("RunState not available yet, skipping.");
                             return;
                         }
 
@@ -538,13 +538,13 @@ public static class MapTracker
                     }
                     catch (Exception ex)
                     {
-                        GD.PrintErr($"[MapOddsTracker] Deferred init failed: {ex.Message}");
+                        ModLogger.LogErr($"Deferred init failed: {ex.Message}");
                     }
                 };
             }
             catch (Exception ex)
             {
-                GD.PrintErr($"[MapOddsTracker] NMapScreen.Open postfix failed: {ex.Message}");
+                ModLogger.LogErr($"NMapScreen.Open postfix failed: {ex.Message}");
             }
         }
     }

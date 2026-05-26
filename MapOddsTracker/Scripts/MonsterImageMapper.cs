@@ -40,7 +40,7 @@ public static class MonsterImageMapper
                 BossIds.Add(id.Trim().ToLowerInvariant());
         }
         _bossIdsRegistered = true;
-        GD.Print($"[MapOddsTracker] Registered {BossIds.Count} boss IDs from runtime data.");
+        GD.Print($"[MapOddsTracker] Registered {BossIds.Count} boss IDs from runtime data: [{string.Join(", ", BossIds)}]");
     }
 
     // Non-standard filename overrides: key = monster ID, value = filename stem (no extension).
