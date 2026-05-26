@@ -14,7 +14,7 @@ internal static class ModLogger
 
     static ModLogger()
     {
-        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var appData = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
         var logDir = Path.Combine(appData, "SlayTheSpire2");
         Directory.CreateDirectory(logDir);
         LogFilePath = Path.Combine(logDir, "MapOddsTracker.log");
@@ -38,7 +38,7 @@ internal static class ModLogger
     {
         try
         {
-            File.AppendAllText(LogFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {line}{Environment.NewLine}");
+            File.AppendAllText(LogFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {line}{System.Environment.NewLine}");
         }
         catch
         {
