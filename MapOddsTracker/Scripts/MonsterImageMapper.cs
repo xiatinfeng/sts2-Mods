@@ -40,7 +40,7 @@ public static class MonsterImageMapper
                 BossIds.Add(id.Trim().ToLowerInvariant());
         }
         _bossIdsRegistered = true;
-        GD.Print($"[MapOddsTracker] Registered {BossIds.Count} boss IDs from runtime data: [{string.Join(", ", BossIds)}]");
+        ModLogger.Log($Registered {BossIds.Count} boss IDs from runtime data: [{string.Join(", ", BossIds)}]");
     }
 
     // Non-standard filename overrides: key = monster ID, value = filename stem (no extension).
@@ -59,7 +59,7 @@ public static class MonsterImageMapper
         var assemblyDir = Path.GetDirectoryName(assemblyPath);
         AssetsBaseDir = assemblyDir != null ? Path.Combine(assemblyDir, "assets") : string.Empty;
 
-        GD.Print($"[MapOddsTracker] MonsterImageMapper initialized. AssetsBaseDir={AssetsBaseDir}");
+        ModLogger.Log($MonsterImageMapper initialized. AssetsBaseDir={AssetsBaseDir}");
         ScanManualFolder();
     }
 
@@ -67,16 +67,16 @@ public static class MonsterImageMapper
     {
         if (string.IsNullOrEmpty(AssetsBaseDir))
         {
-            GD.PrintErr("[MapOddsTracker] AssetsBaseDir is empty, cannot scan manual folder.");
+            ModLogger.LogErr("AssetsBaseDir is empty, cannot scan manual folder.");
             return;
         }
 
         var manualPath = Path.Combine(AssetsBaseDir, ManualDir);
-        GD.Print($"[MapOddsTracker] Scanning manual folder: {manualPath}");
+        ModLogger.Log($Scanning manual folder: {manualPath}");
 
         if (!Directory.Exists(manualPath))
         {
-            GD.PrintErr($"[MapOddsTracker] Manual folder does not exist: {manualPath}");
+            ModLogger.LogErr($"Manual folder does not exist: {manualPath}");
             return;
         }
 
@@ -91,13 +91,13 @@ public static class MonsterImageMapper
                 var stem = Path.GetFileNameWithoutExtension(file);
                 ManualFileCache[stem] = file;
                 count++;
-                GD.Print($"[MapOddsTracker] Cached manual image: {stem} -> {file}");
+                ModLogger.Log($Cached manual image: {stem} -> {file}");
             }
-            GD.Print($"[MapOddsTracker] Manual folder scan complete. {count} images cached.");
+            ModLogger.Log($Manual folder scan complete. {count} images cached.");
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"[MapOddsTracker] Failed to scan manual folder: {ex.Message}");
+            ModLogger.LogErr($"Failed to scan manual folder: {ex.Message}");
         }
     }
 
@@ -142,7 +142,7 @@ public static class MonsterImageMapper
         // Fallback: manual folder (exact stem match, case-insensitive)
         if (ManualFileCache.TryGetValue(id, out var manualPath))
         {
-            GD.Print($"[MapOddsTracker] Found manual image for '{id}': {manualPath}");
+            ModLogger.Log($Found manual image for '{id}': {manualPath}");
             return manualPath;
         }
 
@@ -151,12 +151,12 @@ public static class MonsterImageMapper
         {
             if (kvp.Key.Contains(id, StringComparison.OrdinalIgnoreCase) || id.Contains(kvp.Key, StringComparison.OrdinalIgnoreCase))
             {
-                GD.Print($"[MapOddsTracker] Found partial manual match for '{id}': {kvp.Value}");
+                ModLogger.Log($Found partial manual match for '{id}': {kvp.Value}");
                 return kvp.Value;
             }
         }
 
-        GD.Print($"[MapOddsTracker] No image found for '{id}' (isBoss={isBoss})");
+        ModLogger.Log($No image found for '{id}' (isBoss={isBoss})");
         return null;
     }
 

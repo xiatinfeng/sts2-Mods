@@ -81,7 +81,7 @@ public partial class MonsterTooltip : PanelContainer
             idsToShow.Add(englishId);
         }
 
-        GD.Print($"[MapOddsTracker] ShowMonster: displayName={displayName}, ids=[{string.Join(", ", idsToShow)}], isBoss={isBoss}");
+        ModLogger.Log($ShowMonster: displayName={displayName}, ids=[{string.Join(", ", idsToShow)}], isBoss={isBoss}");
 
         // Clear previous images
         foreach (var child in _imageRow.GetChildren())
@@ -95,7 +95,7 @@ public partial class MonsterTooltip : PanelContainer
         foreach (var id in idsToShow)
         {
             var imagePath = MonsterImageMapper.GetImagePath(id, isBoss);
-            GD.Print($"[MapOddsTracker] Looking up image for '{id}' (isBoss={isBoss}): {(imagePath ?? "NOT FOUND")}");
+            ModLogger.Log($Looking up image for '{id}' (isBoss={isBoss}): {(imagePath ?? "NOT FOUND")}");
             
             var imgRect = new TextureRect();
             imgRect.ExpandMode = TextureRect.ExpandModeEnum.FitWidthProportional;
@@ -118,7 +118,7 @@ public partial class MonsterTooltip : PanelContainer
         if (!anyLoaded)
         {
             _nameLabel.Text = $"{displayName}\n(无图片)";
-            GD.Print($"[MapOddsTracker] No images loaded for '{displayName}'");
+            ModLogger.Log($No images loaded for '{displayName}'");
         }
 
         // Calculate expected tooltip size for boundary detection
@@ -186,7 +186,7 @@ public partial class MonsterTooltip : PanelContainer
         if (TextureCache.TryGetValue(absolutePath, out var cachedTexture))
         {
             imgRect.Texture = cachedTexture;
-            GD.Print($"[MapOddsTracker] Image loaded from cache: {absolutePath}");
+            ModLogger.Log($Image loaded from cache: {absolutePath}");
             return cachedTexture != null;
         }
 
@@ -200,12 +200,12 @@ public partial class MonsterTooltip : PanelContainer
                 var texture = ImageTexture.CreateFromImage(image);
                 imgRect.Texture = texture;
                 TextureCache[absolutePath] = texture;
-                GD.Print($"[MapOddsTracker] Image loaded successfully: {absolutePath}");
+                ModLogger.Log($Image loaded successfully: {absolutePath}");
                 return true;
             }
             else
             {
-                GD.PrintErr($"[MapOddsTracker] Failed to load image '{absolutePath}': {error}");
+                ModLogger.LogErr($"Failed to load image '{absolutePath}': {error}");
                 imgRect.Texture = null;
                 TextureCache[absolutePath] = null;
                 return false;
@@ -213,7 +213,7 @@ public partial class MonsterTooltip : PanelContainer
         }
         catch (Exception ex)
         {
-            GD.PrintErr($"[MapOddsTracker] Image loading exception for '{absolutePath}': {ex.Message}");
+            ModLogger.LogErr($"Image loading exception for '{absolutePath}': {ex.Message}");
             imgRect.Texture = null;
             TextureCache[absolutePath] = null;
             return false;
