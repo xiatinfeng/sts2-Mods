@@ -252,71 +252,10 @@ public static class ModSyncCore
     /// <summary>
     /// 扫描当前加载的所有 MOD
     /// </summary>
-    public static List<ModInfoSnapshot> ScanLocalMods()
-    {
-        var result = new List<ModInfoSnapshot>();
-
-        try
-        {
-            var modsProperty = typeof(ModManager).GetProperty("Mods", BindingFlags.Public | BindingFlags.Static);
-            var mods = modsProperty?.GetValue(null) as IReadOnlyList<Mod>;
-
-            if (mods == null)
-            {
-                GD.PrintErr("[ModSyncChecker] Could not get ModManager.Mods");
-                return result;
-            }
-
-            for (int i = 0; i < mods.Count; i++)
-            {
-                var mod = mods[i];
-                // 尝试读取 modSource（1=本地mods文件夹, 2=Steam Workshop）
-                int modSource = 1;
-                try
-                {
-                    var msField = mod.GetType().GetField("modSource", BindingFlags.Public | BindingFlags.Instance);
-                    var msProp = mod.GetType().GetProperty("modSource", BindingFlags.Public | BindingFlags.Instance);
-                    if (msField != null)
-                        modSource = Convert.ToInt32(msField.GetValue(mod));
-                    else if (msProp != null)
-                        modSource = Convert.ToInt32(msProp.GetValue(mod));
-                }
-                catch { }
-
-                var snapshot = new ModInfoSnapshot
-                {
-                    Id = mod.manifest?.id ?? "unknown",
-                    Name = mod.manifest?.name ?? mod.path.GetFile(),
-                    Version = mod.manifest?.version ?? "N/A",
-                    Author = mod.manifest?.author ?? "unknown",
-                    Path = mod.path,
-                    HasDll = mod.manifest?.hasDll ?? false,
-                    HasPck = mod.manifest?.hasPck ?? false,
-                    AffectsGameplay = mod.manifest?.affectsGameplay ?? true,
-                    IsEnabled = mod.state != ModLoadState.Disabled,
-                    State = mod.state,
-                    Dependencies = GetDependenciesSafe(mod),
-                    LoadOrder = i,
-                    ModSource = modSource
-                };
-
-                // 计算 DLL 哈希（如果有）
-                if (snapshot.HasDll)
-                {
-                    string dllPath = Path.Combine(mod.path, snapshot.Id + ".dll");
-                    snapshot.DllHash = ComputeFileHash(dllPath);
-                }
-
-                result.Add(snapshot);
-            }
-        }
-        catch (Exception ex)
-        {
-            GD.PrintErr($"[ModSyncChecker] Failed to scan mods: {ex.Message}");
-        }
-
-        return result;
-    }
+    public static List<ModInfoSnapshot> ScanLocalMods() =>
+        Directory.Exists("mods") ? Directory.GetFiles("mods", "*.json")
+        .Select(f => JsonConvert.DeserializeObject<ModInfoSnapshot>(File.ReadAllText(f)))
+        .Where(m => m != null).ToList() : new List<ModInfoSnapshot>();
 
     /// <summary>
     /// 比较本地 MOD 列表与远程 MOD 列表（从连接失败信息中获得）
