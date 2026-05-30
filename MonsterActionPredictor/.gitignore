@@ -1,0 +1,8 @@
+.godot/
+.godot/
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.workbuddy/
