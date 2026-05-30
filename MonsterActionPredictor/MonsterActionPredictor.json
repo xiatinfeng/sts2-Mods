@@ -1,0 +1,11 @@
+{
+  "id": "MonsterActionPredictor",
+  "name": "Monster Action Predictor",
+  "version": "1.0.3",
+  "author": "xiatingfeng",
+  "description": "Shows next 2 monster moves via reflection-based prediction (JIT-safe fork of ByQsA/MonsterActionPredictor)",
+  "has_dll": true,
+  "has_pck": false,
+  "affectsGameplay": false,
+  "dependencies": []
+}
