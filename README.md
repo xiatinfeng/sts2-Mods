@@ -12,17 +12,24 @@ Compare your mod list with teammates before co-op.
 - **Version**: 2.3.7
 - **Platform**: Godot 4.6.2 Mono / BepInEx
 - **Dependencies**: BaseLib (optional, soft dependency)
-- **License**: MIT
 
-**Key Features**:
-- Compare MOD lists between players before co-op sessions
-- Export your MOD profile as a code for easy sharing
-- Import teammate's profile and see differences at a glance
-- Multi-language support (EN, ZH built-in)
+### [MapOddsTracker](./MapOddsTracker) — Map Odds Tracker / 地图概率追踪
 
-#### [Help Translate](./ModSyncChecker/i18n/README.md)
+Shows encounter odds for each map node during a run.  
+在爬塔过程中显示每个节点的遇敌概率。
 
-Community translations wanted! See the [i18n translation guide](./ModSyncChecker/i18n/README.md) to contribute a new language.
+- **Version**: 1.0.0
+- **Platform**: Godot 4.6.2 Mono
+- **Dependencies**: None (standalone)
+
+### [MonsterActionPredictor](./MonsterActionPredictor) — Monster Action Predictor / 怪物行动预测
+
+Predicts the next 2 moves of monsters, displayed as translucent intent icons.  
+预测怪物接下来 2 回合的行动意图，以半透明图标显示在怪物右下方。
+
+- **Version**: 1.0.3 (fork of [ByQsA/MonsterActionPredictor](https://github.com/aoyamaY/StS2-MonsterActionPredictor))
+- **Platform**: Godot 4.6.2 Mono
+- **Dependencies**: None (standalone)
 
 ---
 
