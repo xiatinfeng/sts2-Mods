@@ -1,0 +1,23 @@
+# Godot build output
+.godot/
+*.dll
+*.pdb
+
+# IDE
+.vs/
+*.suo
+*.user
+
+# Debug logs (local data, never commit)
+debug.log
+spawn-cheat-debug.log
+spawn-cheat-init-error.txt
+*.log
+
+# Local user data
+favorites.json
+spawn_cheat_collections.json
+
+# Build output
+bin/
+obj/

@@ -1,0 +1,33 @@
+<Project Sdk="Godot.NET.Sdk/4.6.2">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <!-- 优先使用环境变量 STS2_DIR，否则用默认路径 -->
+    <Sts2Dir Condition="'$(STS2_DIR)' != ''">$(STS2_DIR)</Sts2Dir>
+    <Sts2Dir Condition="'$(STS2_DIR)' == ''">D:\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
+    <Sts2DataDir>$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
+    <RootNamespace>Sts2SpawnCheat</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="docs/reference/**/*.cs" />
+  </ItemGroup>
+  <Target Name="Copy Mod" AfterTargets="PostBuildEvent">
+    <MakeDir Directories="$(Sts2Dir)\mods\$(MSBuildProjectName)\" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2Dir)\mods\$(MSBuildProjectName)\" />
+    <Copy SourceFiles="mod_manifest.json" DestinationFolder="$(Sts2Dir)/mods/$(MSBuildProjectName)/" />
+  </Target>
+</Project>

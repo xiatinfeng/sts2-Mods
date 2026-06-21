@@ -1,11 +1,13 @@
 using System;
 using System.IO;
 using Godot;
+using MegaCrit.Sts2.Core.Logging;
 
 namespace MapOddsTracker.Scripts;
 
 /// <summary>
 /// Thin wrapper around GD.Print / GD.PrintErr that also writes to a dedicated log file.
+/// Also routes through Log.Info/Log.Error so ModLogPlus can capture the output.
 /// Log file: %APPDATA%/SlayTheSpire2/MapOddsTracker.log
 /// </summary>
 internal static class ModLogger
@@ -24,6 +26,7 @@ internal static class ModLogger
     {
         var line = $"{ModConstants.LogPrefix} {message}";
         GD.Print(line);
+        Log.Info(line);    // route to ModLogPlus
         AppendToFile(line);
     }
 
@@ -31,6 +34,7 @@ internal static class ModLogger
     {
         var line = $"{ModConstants.LogPrefix} {message}";
         GD.PrintErr(line);
+        Log.Error(line);   // route to ModLogPlus
         AppendToFile($"[ERR] {line}");
     }
 

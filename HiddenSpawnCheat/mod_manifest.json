@@ -1,0 +1,10 @@
+{
+  "id": "sts2-spawn-cheat",
+  "version": "1.6.0",
+  "name": "Hidden Spawn Cheat / 隐藏生成作弊器",
+  "author": "K2 & Xiatingfeng",
+  "description": "隐藏生成作弊器 是一款 STS2 隐形作弊模组。按 F5 打开面板，标记你想要的卡牌、遗物或药水，下一次获得对应奖励时自动顶替。\n\n功能列表：\n• 卡牌顶替 — 在面板中标记卡牌，下次卡牌奖励自动替换原卡。队列消耗式顶替，不对局历史留下痕迹\n• 顶替卡模式 — 替换卡牌奖励中的一张\n• 遗物顶替 — 标记遗物，下次遗物奖励自动替换（不含宝箱节点）。不消耗遗物池，可无限刷新商店\n• 药水顶替 — 标记药水，下次药水奖励自动替换\n• 商店篡改 — 刷新更改商店在售物品，标记的物品自动注入\n• 收藏系统 — 保存常用卡牌/遗物/药水，快速标记\n• 隐形设计 — 联机列表隐藏，全部本地修改，不使用控制台指令，无检测痕迹，对局记录合法来源\n\n仅本地安装，多人不需要都安装。\n\n---\n\nHidden Spawn Cheat is a stealth cheat mod for Slay the Spire 2. Press F5 to open the panel, mark any card, relic, or potion you want, and it will automatically replace the next matching reward.\n\nFeatures:\n• Card Replacement — Mark cards in the panel; the next card reward is replaced automatically. Queue-consumption replacement leaves no run history traces.\n• Replacement Mode — Replaces one card in the reward, does not add extras.\n• Relic Replacement — Mark a relic; the next relic reward is replaced (chest nodes excluded). Relic grab bag is never consumed — infinite shop refresh.\n• Potion Replacement — Mark a potion; the next potion reward is replaced.\n• Shop Manipulation — Refresh the merchant inventory; marked items are automatically injected.\n• Collection System — Save and quick-mark your favorite cards, relics, and potions.\n• Stealth Design — Hidden from the multiplayer mod list. All modifications are client-side. No console commands, no detectable traces. Run history appears legitimate.\n\nLocal install only — multiplayer participants do not need to install.",
+  "has_pck": false,
+  "has_dll": true,
+  "affects_gameplay": false
+}

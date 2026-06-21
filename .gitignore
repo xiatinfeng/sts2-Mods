@@ -15,3 +15,24 @@ obj/
 # OS
 .DS_Store
 Thumbs.db
+
+# Debug logs and local data
+debug.log
+spawn-cheat-debug.log
+spawn-cheat-init-error.txt
+*.log
+favorites.json
+spawn_cheat_collections.json
+
+# Dev-only task files
+TASKS/
+
+# Godot UID files (auto-generated)
+*.uid
+**/*.uid
+
+# Godot import files
+*.import
+
+# Pi review artifacts
+_pi_review/

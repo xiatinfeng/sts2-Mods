@@ -31,6 +31,15 @@ Predicts the next 2 moves of monsters, displayed as translucent intent icons.
 - **Platform**: Godot 4.6.2 Mono
 - **Dependencies**: None (standalone)
 
+### [HiddenSpawnCheat](./HiddenSpawnCheat) — Hidden Spawn Cheat / 隐藏生成作弊器
+
+A stealth cheat mod for Slay the Spire 2. Mark cards, relics, or potions in the panel (F5) and they'll replace the next matching reward.  
+一款 STS2 隐形作弊模组。按 F5 打开面板标记卡牌/遗物/药水，下次获得对应奖励时自动顶替。
+
+- **Version**: 1.6.0
+- **Platform**: Godot 4.6.2 Mono
+- **Dependencies**: None (standalone)
+
 ---
 
 ## License
